@@ -35,11 +35,12 @@ Entregar o **Módulo de Tomada de Decisão (MTD)** funcional e a **estrutura ini
 
 ## 🧱 Estrutura do Sistema
 
+```
 erp-fazenda-porteira-azul/
 │
 ├── app/
 │ ├── app.py # Arquivo principal do Flask
-│ ├── models.py # Modelos e tabelas (SQLAlchemy)
+│ ├── models.py # Modelos e tabelas
 │ ├── routes.py # Rotas e endpoints
 │ ├── mtd.py # Lógica do módulo de decisão
 │ ├── templates/ # HTML do dashboard
@@ -49,7 +50,7 @@ erp-fazenda-porteira-azul/
 ├── requirements.txt # Dependências do projeto
 ├── README.md # Este arquivo 
 └── .gitignore
-
+````
 
 ## 🧮 Módulo de Tomada de Decisão (MTD)
 
@@ -81,18 +82,23 @@ O dashboard exibe:
 
 ---
 
-👩‍💻 Equipe de Desenvolvimento
-Nome	Função	Responsabilidades
-Laura Evelyn Neves Oliveira	Líder do Projeto	integração com MySQL ,testes, layout do sistema e
- entrega no GSA
-Amanda	Desenvolvedora	Banco de dados, dashboard web, Estrutura Flask, MTD.
+## 👩‍💻 Equipe de Desenvolvimento
 
-📅 Planejamento (Sprints)
-Sprint	Objetivo Principal	Entregável
-1	Estrutura Flask + MTD funcional	Endpoint + Dashboard básico
-2	CRUDs (Funcionários, Maquinário, Estoque)	Interfaces e formulários
-3	Integração total do ERP + testes	Sistema unificado
-4	Refinamento e Apresentação Final	Sistema completo e estável
+| **Nome** | **Função** | **Responsabilidades** |
+|-----------|-------------|------------------------|
+| **Laura Evelyn Neves Oliveira** | Líder do Projeto | Integração com MySQL, testes, layout do sistema e entrega no GSA |
+| **Amanda** | Desenvolvedora | Banco de dados, dashboard web, estrutura Flask e módulo de tomada de decisão (MTD) |
+
+
+## 🗓️ Planejamento (Sprints)
+
+| **Sprint** | **Objetivo Principal**                           | **Entregável** |
+|-------------|--------------------------------------------------|----------------|
+| **1** | Estrutura do sistema Flask + Módulo de Tomada de Decisão (MTD) funcional | Endpoint inicial + Dashboard básico |
+| **2** | Desenvolvimento dos CRUDs principais (Funcionários, Maquinário e Estoque) | Interfaces e formulários completos |
+| **3** | Integração total do ERP + Testes de consistência | Sistema unificado e validado |
+| **4** | Refinamento final e preparação da apresentação | Sistema completo, estável e pronto para entrega |
+
 
 🧾 Licença
 Este projeto é de uso acadêmico e foi desenvolvido como parte da disciplina de Sistemas de Apoio à Decisão do IFSULDEMINAS – Campus Machado.
