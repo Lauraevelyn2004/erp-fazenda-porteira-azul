@@ -1,0 +1,76 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.background {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e6f3e6 0%, #dbd2c5 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    background: #f6f3ee;
+    border-radius: 20px;
+    box-shadow: 0 2px 16px #b2ad8855;
+    padding: 40px 32px 32px 32px;
+    width: 340px;
+    text-align: center;
+}
+
+h2 {
+    color: #7c5930;
+    margin-bottom: 32px;
+    font-weight: 600;
+    font-size: 1.3rem;
+    letter-spacing: 1.5px;
+}
+
+label {
+    color: #7c5930;
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    font-size: 1rem;
+    margin-top: 16px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #cfc7ae;
+    background: #f4efe6;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+button {
+    width: 100%;
+    background: #a3c6a3;
+    color: #4e412e;
+    border: none;
+    border-radius: 16px;
+    padding: 13px 0;
+    font-size: 1.08rem;
+    font-weight: 600;
+    margin-top: 12px;
+    box-shadow: 0 2px 10px #b1b29933;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #7ebc7e;
+}
+
+ul {
+    margin: 10px 0 0 0;
+    padding: 0;
+    color: #ab5f20;
+    font-weight: bold;
+    list-style: none;
+}
