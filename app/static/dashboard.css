@@ -1,0 +1,117 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #e6f3e6 0%, #dbd2c5 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-container {
+    background: #f6f3ee;
+    border-radius: 24px;
+    box-shadow: 0 4px 24px #b2ad8833;
+    padding: 28px 0 28px 0;
+    width: 680px;
+    min-height: 420px;
+    display: flex;
+    gap: 0px;
+}
+
+.menu-vertical {
+    background: #e6f3e6;
+    border-radius: 20px;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 12px 28px 12px;
+    min-height: 320px;
+    box-shadow: 0 2px 16px #b2ad8855;
+}
+
+.logo {
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: #6b8e62;
+    font-size: 1.19rem;
+    text-align: center;
+    margin-bottom: 28px;
+    margin-top: 8px;
+}
+
+.menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    align-items: center;
+}
+
+.menu-links a {
+    text-decoration: none;
+    color: #7c5930;
+    font-weight: 500;
+    padding: 10px 0px;
+    width: 100%;
+    border-radius: 12px;
+    font-size: 1rem;
+    text-align: center;
+    transition: background 0.2s;
+    background: transparent;
+}
+
+.menu-links a:hover, .sair-btn:hover {
+    background: #d3e2ce;
+}
+
+.sair-btn {
+    background: #a3c6a3;
+    color: #644321;
+    font-size: 1.06rem;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 0px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px #b1b29933;
+    width: 90%;
+    margin-top: 10px;
+    text-decoration: none;
+    display: block;
+}
+
+.conteudo-dashboard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h2 {
+    color: #6b8e62;
+    font-size: 2rem;
+    margin-bottom: 0.35em;
+    margin-top: 0;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #ab5f20;
+    font-size: 1.13rem;
+    margin-bottom: 16px;
+    font-weight: bold;
+}
+
+.welcome-box {
+    background: #e8dfce;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px #b1b29933;
+    padding: 22px 17px 18px 17px;
+    color: #6b4e2f;
+    margin-bottom: 16px;
+    font-size: 16px;
+    width: 361px;
+    text-align: center;
+}
