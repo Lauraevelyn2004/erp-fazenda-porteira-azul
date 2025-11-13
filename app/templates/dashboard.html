@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <title>Dashboard | ERP Fazenda Porteira Azul</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+       <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
     <div class="dashboard-container">
         <aside class="menu-vertical">
             <div class="logo">ERP Porteira Azul</div>
             <nav class="menu-links">
-                <a href="#funcionarios">Funcionários</a>
+                <a href="{{ url_for('main.listar_funcionarios') }}">Funcionários</a>
                 <a href="#maquinario">Maquinário</a>
                 <a href="#estoque">Estoque</a>
                 <a href="#mtd">Decisão de Venda</a>

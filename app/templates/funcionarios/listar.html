@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionários - ERP Porteira Azul</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/funcionarios.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👥 Gerenciar Funcionários</h1>
+            <a href="{{ url_for('main.novo_funcionario') }}" class="btn-novo">+ Novo Funcionário</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alerts">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <span>{{ message }}</span>
+                            <button class="close-btn" onclick="this.parentElement.style.display='none';">×</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% if funcionarios %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Função</th>
+                        <th>Salário</th>
+                        <th>Data Admissão</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for func in funcionarios %}
+                    <tr>
+                        <td>#{{ func.id }}</td>
+                        <td>{{ func.nome }}</td>
+                        <td>{{ func.funcao }}</td>
+                        <td>R$ {{ "%.2f"|format(func.salario) if func.salario else '-' }}</td>
+                        <td>
+                            {% if func.data_admissao %}
+                                {{ func.data_admissao.strftime('%d/%m/%Y') if func.data_admissao is not string else func.data_admissao }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="acoes">
+                               <a href="{{ url_for('main.editar_funcionario', id=func.id) }}" class="btn-edit">Editar</a>
+<a href="{{ url_for('main.deletar_funcionario', id=func.id) }}" class="btn-delete" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="empty-message">
+                <p>📭 Nenhum funcionário cadastrado</p>
+                <p><a href="{{ url_for('main.novo_funcionario') }}">Clique aqui para adicionar um novo funcionário →</a></p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Fechar alertas automaticamente após 5 segundos
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.display = 'none';
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
