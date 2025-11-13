@@ -29,3 +29,4 @@ def close_db(error):
 # Importa as rotas após definir app e get_db
 from app.routes import bp as mainbp
 app.register_blueprint(mainbp)
+
