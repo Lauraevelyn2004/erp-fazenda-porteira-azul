@@ -1,1 +1,70 @@
-askdklasdjlkasjdaaaaaaaaaaaa
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% if estoque %}Editar{% else %}Novo{% endif %} Estoque | Porteira Azul</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estoque_novo.css') }}">
+</head>
+<body>
+  <div class="form-container">
+    <div class="form-header">
+      <h2>{% if estoque %}Editar Estoque{% else %}Novo Estoque{% endif %}</h2>
+      <p>Preencha os dados do item de estoque</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" autocomplete="off">
+      <div class="form-group">
+        <label for="produto">Produto *</label>
+        <select id="produto" name="produto" required>
+          <option value="">-- Selecione um produto --</option>
+          <option value="cafe"  {% if estoque and estoque.produto == 'cafe'  %}selected{% endif %}>Café</option>
+          <option value="soja"  {% if estoque and estoque.produto == 'soja'  %}selected{% endif %}>Soja</option>
+          <option value="milho" {% if estoque and estoque.produto == 'milho' %}selected{% endif %}>Milho</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="quantidade">Quantidade de Sacas *</label>
+        <input
+          type="number"
+          id="quantidade"
+          name="quantidade"
+          step="0.01"
+          min="0"
+          max="999999"
+          required
+          value="{% if estoque %}{{ estoque.quantidade }}{% endif %}"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="local_armazenamento">Local de Armazenamento *</label>
+        <input
+          type="text"
+          id="local_armazenamento"
+          name="local_armazenamento"
+          maxlength="100"
+          required
+          value="{% if estoque %}{{ estoque.localarmazenamento }}{% endif %}"
+        />
+      </div>
+
+      <div class="form-actions">
+        <a href="{{ url_for('main.listar_estoques') }}" class="btn btn-voltar">Voltar</a>
+        <button type="submit" class="btn btn-salvar">
+          {% if estoque %}Atualizar{% else %}Salvar{% endif %}
+        </button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

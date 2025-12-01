@@ -182,15 +182,61 @@ def novo_maquinario():
     return render_template('maquinario/novo.html',
                          usuario=session['usuario'],
                          funcionarios=funcionarios)
+@bp.route('/maquinario/<int:id>/editar', methods=['GET', 'POST'])
+def editar_maquinario(id):
+    """Edita um maquinário"""
+    if 'usuario' not in session:
+        return redirect(url_for('main.login'))
+
+    db = get_db()
+    if request.method == 'POST':
+        tipo = request.form.get('tipo')
+        modelo = request.form.get('modelo')
+        status = request.form.get('status')
+        data_aquisicao = request.form.get('data_aquisicao')
+        funcionario_id = request.form.get('funcionario_id') or None
+
+        try:
+            utils.atualizar_maquinario(db, id, tipo, modelo, status, data_aquisicao, funcionario_id)
+            flash('Maquinário atualizado com sucesso!', 'success')
+            return redirect(url_for('main.listar_maquinarios'))
+        except Exception as e:
+            flash(f'Erro ao atualizar: {str(e)}', 'danger')
+
+    maquinario = utils.obter_maquinario(db, id)
+    funcionarios = utils.listar_funcionarios(db)
+    if not maquinario:
+        flash('Maquinário não encontrado.', 'warning')
+        return redirect(url_for('main.listar_maquinarios'))
+
+    return render_template('maquinario/novo.html',
+                           usuario=session['usuario'],
+                           maquinario=maquinario,
+                           funcionarios=funcionarios)
+
+@bp.route('/maquinario/<int:id>/deletar')
+def deletar_maquinario(id):
+    """Deleta um maquinário"""
+    if 'usuario' not in session:
+        return redirect(url_for('main.login'))
+
+    db = get_db()
+    try:
+        utils.deletar_maquinario(db, id)
+        flash('Maquinário deletado com sucesso!', 'success')
+    except Exception as e:
+        flash(f'Erro ao deletar: {str(e)}', 'danger')
+    
+    return redirect(url_for('main.listar_maquinarios'))
 
 
 # =====================================================
 # NOVAS ROTAS: ESTOQUE
 # =====================================================
-
 @bp.route('/estoque')
 def listar_estoques():
     """Lista todos os estoques"""
+    
     if 'usuario' not in session:
         return redirect(url_for('main.login'))
     
@@ -198,8 +244,8 @@ def listar_estoques():
     estoques = utils.listar_estoques(db)
     
     return render_template('estoque/listar.html',
-                         usuario=session['usuario'],
-                         estoques=estoques)
+                           usuario=session['usuario'],
+                           estoques=estoques)
 
 
 @bp.route('/estoque/novo', methods=['GET', 'POST'])
@@ -212,11 +258,10 @@ def novo_estoque():
         produto = request.form.get('produto')
         quantidade = request.form.get('quantidade')
         local_armazenamento = request.form.get('local_armazenamento')
-        qualidade = request.form.get('qualidade') or None
         
         db = get_db()
         try:
-            utils.inserir_estoque(db, produto, quantidade, local_armazenamento, qualidade)
+            utils.inserir_estoque(db, produto, quantidade, local_armazenamento)
             flash('Estoque cadastrado com sucesso!', 'success')
             return redirect(url_for('main.listar_estoques'))
         except Exception as e:
@@ -224,6 +269,51 @@ def novo_estoque():
     
     return render_template('estoque/novo.html', usuario=session['usuario'])
 
+
+@bp.route('/estoque/<int:id>/editar', methods=['GET', 'POST'])
+def editar_estoque(id):
+    """Edita um estoque"""
+    if 'usuario' not in session:
+        return redirect(url_for('main.login'))
+    
+    db = get_db()
+    
+    if request.method == 'POST':
+        produto = request.form.get('produto')
+        quantidade = request.form.get('quantidade')
+        local_armazenamento = request.form.get('local_armazenamento')
+        
+        try:
+            utils.atualizar_estoque(db, id, produto, quantidade, local_armazenamento)
+            flash('Estoque atualizado com sucesso!', 'success')
+            return redirect(url_for('main.listar_estoques'))
+        except Exception as e:
+            flash(f'Erro ao atualizar: {str(e)}', 'danger')
+    
+    estoque = utils.obter_estoque(db, id)
+    if not estoque:
+        flash('Estoque não encontrado.', 'warning')
+        return redirect(url_for('main.listar_estoques'))
+    
+    return render_template('estoque/novo.html',
+                           usuario=session['usuario'],
+                           estoque=estoque)
+
+
+@bp.route('/estoque/<int:id>/deletar')
+def deletar_estoque(id):
+    """Deleta um estoque"""
+    if 'usuario' not in session:
+        return redirect(url_for('main.login'))
+    
+    db = get_db()
+    try:
+        utils.deletar_estoque(db, id)
+        flash('Estoque deletado com sucesso!', 'success')
+    except Exception as e:
+        flash(f'Erro ao deletar: {str(e)}', 'danger')
+    
+    return redirect(url_for('main.listar_estoques'))
 
 # =====================================================
 # NOVAS ROTAS: MÓDULO DE TOMADA DE DECISÃO (MTD)

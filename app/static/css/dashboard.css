@@ -2,45 +2,49 @@ body, html {
     height: 100%;
     margin: 0;
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #e6f3e6 0%, #dbd2c5 100%);
+    background: linear-gradient(135deg, #dfefff 0%, #b7cfe8 50%, #a6bfdc 100%);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Card principal do dashboard */
 .dashboard-container {
-    background: #f6f3ee;
+    background: #f7f9fc;
     border-radius: 24px;
-    box-shadow: 0 4px 24px #b2ad8833;
-    padding: 28px 0 28px 0;
+    box-shadow: 0 4px 24px rgba(40, 80, 140, 0.18);
+    padding: 28px 0;
     width: 680px;
     min-height: 420px;
     display: flex;
-    gap: 0px;
+    gap: 0;
 }
 
+/* Menu lateral */
 .menu-vertical {
-    background: #e6f3e6;
+    background: #d4e4f7;
     border-radius: 20px;
     width: 180px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 28px 12px 28px 12px;
+    padding: 28px 12px;
     min-height: 320px;
-    box-shadow: 0 2px 16px #b2ad8855;
+    box-shadow: 0 2px 16px rgba(40, 80, 140, 0.25);
 }
 
+/* Logo */
 .logo {
     font-weight: bold;
     letter-spacing: 1.5px;
-    color: #6b8e62;
+    color: #275c91;
     font-size: 1.19rem;
     text-align: center;
     margin-bottom: 28px;
     margin-top: 8px;
 }
 
+/* Links do menu */
 .menu-links {
     display: flex;
     flex-direction: column;
@@ -51,36 +55,40 @@ body, html {
 
 .menu-links a {
     text-decoration: none;
-    color: #7c5930;
+    color: #173957;
     font-weight: 500;
-    padding: 10px 0px;
+    padding: 10px 0;
     width: 100%;
     border-radius: 12px;
     font-size: 1rem;
     text-align: center;
-    transition: background 0.2s;
+    transition: background 0.2s, color 0.2s;
     background: transparent;
 }
 
-.menu-links a:hover, .sair-btn:hover {
-    background: #d3e2ce;
+.menu-links a:hover,
+.sair-btn:hover {
+    background: #bfe1ff;
+    color: #0f2a40;
 }
 
+/* Botão sair */
 .sair-btn {
-    background: #a3c6a3;
-    color: #644321;
+    background: #f0f5ff;
+    color: #275c91;
     font-size: 1.06rem;
-    border: none;
+    border: 2px solid #275c91;
     border-radius: 12px;
-    padding: 10px 0px;
+    padding: 10px 0;
     font-weight: bold;
-    box-shadow: 0 2px 6px #b1b29933;
+    box-shadow: 0 2px 6px rgba(39, 92, 145, 0.25);
     width: 90%;
     margin-top: 10px;
     text-decoration: none;
     display: block;
 }
 
+/* Conteúdo principal */
 .conteudo-dashboard {
     flex: 1;
     display: flex;
@@ -89,8 +97,9 @@ body, html {
     justify-content: center;
 }
 
+/* Título e subtítulo */
 h2 {
-    color: #6b8e62;
+    color: #275c91;
     font-size: 2rem;
     margin-bottom: 0.35em;
     margin-top: 0;
@@ -98,18 +107,19 @@ h2 {
 }
 
 .subtitle {
-    color: #ab5f20;
+    color: #28445e;
     font-size: 1.13rem;
     margin-bottom: 16px;
     font-weight: bold;
 }
 
+/* Caixa de boas-vindas */
 .welcome-box {
-    background: #e8dfce;
+    background: #e3efff;
     border-radius: 16px;
-    box-shadow: 0 2px 6px #b1b29933;
+    box-shadow: 0 2px 6px rgba(40, 80, 140, 0.18);
     padding: 22px 17px 18px 17px;
-    color: #6b4e2f;
+    color: #173957;
     margin-bottom: 16px;
     font-size: 16px;
     width: 361px;

@@ -1,1 +1,73 @@
-açsjdklsadn
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estoque | Porteira Azul</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estoque.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="estoque-card">
+      <div class="header">
+        <div>
+          <h2>Controle de Estoque</h2>
+          <p class="subtitle">Gerenciar itens armazenados</p>
+        </div>
+        <a href="{{ url_for('main.novo_estoque') }}" class="btn btn-primary">+ Adicionar Item</a>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="table-wrapper">
+        <table class="estoque-table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Quantidade</th>
+              <th>Local Armazenamento</th>
+              <th>Qualidade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if estoques %}
+              {% for item in estoques %}
+              <tr>
+                <td data-label="Produto">{{ item.produto }}</td>
+                <td data-label="Quantidade">
+                  <span class="qty-badge">{{ item.quantidade }}</span>
+                </td>
+                <td data-label="Local">{{ item.localarmazenamento }}</td>
+                <td data-label="Qualidade">{{ item.qualidade if item.qualidade else '-' }}</td>
+                <td data-label="Ações" class="actions-cell">
+                  <a href="{{ url_for('main.editar_estoque', id=item.id) }}" class="btn btn-secondary btn-sm">Editar</a>
+                  <a href="{{ url_for('main.deletar_estoque', id=item.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja remover este item?');">Remover</a>
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr class="empty-state">
+                <td colspan="5">
+                  <p>Nenhum item no estoque cadastrado.</p>
+                  <a href="{{ url_for('main.novo_estoque') }}" class="btn btn-primary btn-sm">Cadastrar Primeiro Item</a>
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">← Voltar ao Dashboard</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

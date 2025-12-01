@@ -4,33 +4,37 @@ body, html {
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
+/* Fundo azul suave */
 .background {
     min-height: 100vh;
-    background: linear-gradient(135deg, #e6f3e6 0%, #dbd2c5 100%);
+    background: linear-gradient(135deg, #dfefff 0%, #b7cfe8 50%, #a6bfdc 100%);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Card de login */
 .login-container {
-    background: #f6f3ee;
+    background: #f7f9fc;
     border-radius: 20px;
-    box-shadow: 0 2px 16px #b2ad8855;
+    box-shadow: 0 2px 16px rgba(40, 80, 140, 0.25);
     padding: 40px 32px 32px 32px;
     width: 340px;
     text-align: center;
 }
 
+/* Título */
 h2 {
-    color: #7c5930;
+    color: #275c91;
     margin-bottom: 32px;
     font-weight: 600;
     font-size: 1.3rem;
     letter-spacing: 1.5px;
 }
 
+/* Labels */
 label {
-    color: #7c5930;
+    color: #28445e;
     display: block;
     margin-bottom: 5px;
     text-align: left;
@@ -38,39 +42,53 @@ label {
     margin-top: 16px;
 }
 
+/* Inputs */
 input {
     width: 100%;
     padding: 10px;
     border-radius: 12px;
-    border: 1px solid #cfc7ae;
-    background: #f4efe6;
+    border: 1px solid #a7c4e8;
+    background: #ffffff;
     margin-bottom: 10px;
     font-size: 1rem;
+    color: #173957;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+input:focus {
+    border-color: #275c91;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(191, 225, 255, 0.7);
+}
+
+/* Botão */
 button {
     width: 100%;
-    background: #a3c6a3;
-    color: #4e412e;
-    border: none;
+    background: #bfe1ff;
+    color: #123654;
+    border: 2px solid #7fb3e3;
     border-radius: 16px;
     padding: 13px 0;
     font-size: 1.08rem;
     font-weight: 600;
     margin-top: 12px;
-    box-shadow: 0 2px 10px #b1b29933;
-    transition: background 0.2s;
+    box-shadow: 0 2px 10px rgba(40, 80, 140, 0.25);
+    transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
     cursor: pointer;
 }
 
 button:hover {
-    background: #7ebc7e;
+    background: #d4ecff;
+    border-color: #275c91;
+    color: #0f2a40;
+    box-shadow: 0 0 0 2px rgba(39, 92, 145, 0.2);
 }
 
+/* Mensagens de erro */
 ul {
     margin: 10px 0 0 0;
     padding: 0;
-    color: #ab5f20;
+    color: #ab3c20;
     font-weight: bold;
     list-style: none;
 }
