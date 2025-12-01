@@ -6,14 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
        <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
+
 <body>
     <div class="dashboard-container">
         <aside class="menu-vertical">
             <div class="logo">ERP Porteira Azul</div>
             <nav class="menu-links">
                 <a href="{{ url_for('main.listar_funcionarios') }}">Funcionários</a>
-                <a href="#maquinario">Maquinário</a>
-                <a href="#estoque">Estoque</a>
+                <a href="{{ url_for('main.listar_maquinarios') }}">Maquinário</a>
+
+                <a href="{{ url_for('main.listar_estoques') }}">Estoque</a>
                 <a href="#mtd">Decisão de Venda</a>
                 <a href="{{ url_for('main.logout') }}" class="sair-btn">Sair</a>
             </nav>

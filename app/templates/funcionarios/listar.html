@@ -11,6 +11,7 @@
         <div class="header">
             <h1>👥 Gerenciar Funcionários</h1>
             <a href="{{ url_for('main.novo_funcionario') }}" class="btn-novo">+ Novo Funcionário</a>
+            <a href="{{ url_for('main.dashboard') }}" class="btn-voltar"><span style="font-size:1.2em;">←</span> Voltar </a>
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}

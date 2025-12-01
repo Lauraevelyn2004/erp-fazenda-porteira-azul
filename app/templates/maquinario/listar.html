@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maquinário | Porteira Azul</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/maquinario.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="maquinario-card">
+      <div class="header">
+        <div>
+          <h2>Maquinário</h2>
+          <p class="subtitle">Gerenciar máquinas agrícolas</p>
+        </div>
+        <a href="{{ url_for('main.novo_maquinario') }}" class="btn btn-primary">+ Adicionar Maquinário</a>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="table-wrapper">
+        <table class="maquinario-table">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Modelo</th>
+              <th>Status</th>
+              <th>Data de Aquisição</th>
+              <th>Responsável</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if maquinarios %}
+              {% for maq in maquinarios %}
+              <tr>
+                <td>{{ maq.tipo }}</td>
+                <td>{{ maq.modelo }}</td>
+                <td>{{ maq.status }}</td>
+                <td>{{ maq.data_aquisicao or '-' }}</td>
+                <td>{{ maq.funcionario_nome or '-' }}</td>
+                <td class="actions-cell">
+                  <a href="{{ url_for('main.editar_maquinario', id=maq.id) }}"
+                     class="btn btn-secondary btn-sm">Editar</a>
+                  <a href="{{ url_for('main.deletar_maquinario', id=maq.id) }}"
+                     class="btn btn-danger btn-sm"
+                     onclick="return confirm('Tem certeza que deseja remover este maquinário?');">
+                    Remover
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr class="empty-state">
+                <td colspan="6">
+                  <p>Nenhuma máquina cadastrada.</p>
+                  <a href="{{ url_for('main.novo_maquinario') }}" class="btn btn-primary btn-sm">
+                    Cadastrar Primeiro Maquinário
+                  </a>
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">← Voltar ao Dashboard</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

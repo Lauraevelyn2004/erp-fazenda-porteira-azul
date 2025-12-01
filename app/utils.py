@@ -142,45 +142,38 @@ def listar_maquinarios_por_status(db, status):
 # =====================
 # FUNÇÕES PARA ESTOQUE
 # =====================
-
 def listar_estoques(db):
     """Lista todos os estoques"""
     return call_procedure(db, 'sp_select_all_estoques')
-
 
 def obter_estoque(db, estoque_id):
     """Obtém um estoque específico por ID"""
     resultado = call_procedure(db, 'sp_select_estoque_by_id', [estoque_id])
     return resultado[0] if resultado else None
 
-
-def inserir_estoque(db, produto, quantidade, local_armazenamento, qualidade=None):
+def inserir_estoque(db, produto, quantidade, local_armazenamento):
     """Insere um novo estoque"""
     return call_procedure_with_commit(
         db,
         'sp_insert_estoque_producao',
-        [produto, quantidade, local_armazenamento, qualidade]
+        [produto, quantidade, local_armazenamento]
     )
 
-
-def atualizar_estoque(db, estoque_id, produto, quantidade, local_armazenamento, qualidade=None):
+def atualizar_estoque(db, estoque_id, produto, quantidade, local_armazenamento):
     """Atualiza dados de um estoque"""
     return call_procedure_with_commit(
         db,
         'sp_update_estoque_producao',
-        [estoque_id, produto, quantidade, local_armazenamento, qualidade]
+        [estoque_id, produto, quantidade, local_armazenamento]
     )
-
 
 def deletar_estoque(db, estoque_id):
     """Deleta um estoque"""
     return call_procedure_with_commit(db, 'sp_delete_estoque_producao', [estoque_id])
 
-
 def listar_estoque_por_produto(db, produto):
     """Lista estoque filtrado por produto (café, soja, milho)"""
     return call_procedure(db, 'sp_select_estoque_by_produto', [produto])
-
 
 # =====================
 # FUNÇÕES PARA MTD (Módulo de Tomada de Decisão)

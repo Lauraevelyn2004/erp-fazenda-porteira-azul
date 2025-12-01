@@ -1,3 +1,7 @@
+/* ========================================
+   ESTOQUE - TEMA AZUL PORTEIRA AZUL
+   ======================================== */
+
 body {
     background: linear-gradient(135deg, #dfefff 0%, #b7cfe8 50%, #a6bfdc 100%);
     font-family: 'Segoe UI', Arial, sans-serif;
@@ -5,7 +9,7 @@ body {
     padding: 20px;
 }
 
-/* Card principal */
+/* Layout da listagem */
 .container {
     max-width: 950px;
     margin: 30px auto;
@@ -15,7 +19,6 @@ body {
     padding: 32px 32px 20px 32px;
 }
 
-/* Cabeçalho */
 .header {
     display: flex;
     justify-content: space-between;
@@ -25,28 +28,38 @@ body {
     flex-wrap: wrap;
 }
 
-h1 {
+h1,
+h2 {
     color: #275c91;
     font-size: 2rem;
     margin: 0;
 }
 
+.subtitle {
+    color: #28445e;
+    font-size: 0.98rem;
+}
+
 /* Botão "Novo" – ação principal (azul bebê) */
 a.btn-novo,
-.btn-new {
-    background-color: #bfe1ff;      /* azul bebê */
-    color: #123654;
+.btn.btn-primary {
     padding: 10px 23px;
     text-decoration: none;
     border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
     border: 2px solid #7fb3e3;
-    font-weight: bold;
-    font-size: 1.04rem;
+    background: #bfe1ff;
+    color: #123654;
+    cursor: pointer;
     transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
 }
 a.btn-novo:hover,
-.btn-new:hover {
+.btn.btn-primary:hover {
     background: #d4ecff;
     border-color: #275c91;
     color: #0f2a40;
@@ -54,7 +67,8 @@ a.btn-novo:hover,
 }
 
 /* Tabela */
-table {
+table,
+.estoque-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
@@ -89,26 +103,49 @@ tbody tr:hover {
     transition: background 0.2s;
 }
 
+/* Badge de quantidade */
+.qty-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(127, 179, 227, 0.25);
+    color: #123654;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
 /* Ações na tabela */
-.acoes {
+.acoes,
+.actions-cell {
     display: flex;
     gap: 9px;
     flex-wrap: wrap;
 }
 
-/* Botão editar – ação neutra/primária em azul suave */
-a.btn-edit {
+/* Botões base da tabela */
+.actions-cell .btn {
     padding: 7px 16px;
-    text-decoration: none;
     border-radius: 12px;
     font-size: 0.96rem;
     font-weight: 500;
-    border: 1.5px solid #7fb3e3;
-    background: #d4e4f7;
-    color: #173957;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
 }
+
+/* Editar – azul neutro */
+.btn.btn-secondary,
+a.btn-edit {
+    border: 1.5px solid #7fb3e3;
+    background: #d4e4f7;
+    color: #173957;
+}
+.btn.btn-secondary:hover,
 a.btn-edit:hover {
     background: #bfe1ff;
     color: #0e283f;
@@ -116,19 +153,14 @@ a.btn-edit:hover {
     box-shadow: 0 0 0 2px rgba(39, 92, 145, 0.15);
 }
 
-/* Botão deletar – ação perigosa em vermelho */
+/* Remover – vermelho de perigo */
+.btn.btn-danger,
 a.btn-delete {
-    padding: 7px 16px;
-    text-decoration: none;
-    border-radius: 12px;
-    font-size: 0.96rem;
-    font-weight: 500;
     border: 1.5px solid #e47457;
     background: #ffe7e3;
     color: #ab3c20;
-    cursor: pointer;
-    transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
 }
+.btn.btn-danger:hover,
 a.btn-delete:hover {
     background: #ffdad3;
     color: #ff3220;
@@ -136,26 +168,35 @@ a.btn-delete:hover {
     box-shadow: 0 0 0 2px rgba(217, 79, 48, 0.18);
 }
 
+/* Botão pequeno */
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+}
+
 /* Mensagem de tabela vazia */
-.empty-message {
+.empty-message,
+.empty-state td {
     text-align: center;
     padding: 38px 8px;
     color: #28445e;
     font-size: 1.05rem;
 }
 
-.empty-message a {
+.empty-message a,
+.empty-state a {
     color: #3a7bff;
     font-weight: bold;
     text-decoration: underline;
 }
-
-.empty-message a:hover {
+.empty-message a:hover,
+.empty-state a:hover {
     color: #275c91;
 }
 
 /* Botão voltar – neutro */
-.btn-voltar {
+.btn-voltar,
+.btn.btn-outline {
     background-color: #f0f5ff;
     color: #275c91;
     border: 2px solid #275c91;
@@ -167,9 +208,12 @@ a.btn-delete:hover {
     text-decoration: none;
     cursor: pointer;
     transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
-.btn-voltar:hover {
+.btn-voltar:hover,
+.btn.btn-outline:hover {
     background: #d4e4f7;
     color: #173957;
     border-color: #0f2a40;
@@ -189,7 +233,8 @@ a.btn-delete:hover {
         flex-direction: column;
         align-items: stretch;
     }
-    .header h1 {
+    .header h1,
+    .header h2 {
         font-size: 1.6rem;
     }
     table {
