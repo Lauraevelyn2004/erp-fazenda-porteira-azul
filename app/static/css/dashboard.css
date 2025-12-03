@@ -14,7 +14,7 @@ body, html {
     border-radius: 24px;
     box-shadow: 0 4px 24px rgba(40, 80, 140, 0.18);
     padding: 28px 0;
-    width: 680px;
+    width: 1000px;
     min-height: 420px;
     display: flex;
     gap: 0;
@@ -24,10 +24,11 @@ body, html {
 .menu-vertical {
     background: #d4e4f7;
     border-radius: 20px;
-    width: 180px;
+    width: 350px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 20px;
     padding: 28px 12px;
     min-height: 320px;
     box-shadow: 0 2px 16px rgba(40, 80, 140, 0.25);
@@ -38,7 +39,7 @@ body, html {
     font-weight: bold;
     letter-spacing: 1.5px;
     color: #275c91;
-    font-size: 1.19rem;
+    font-size: 2rem;
     text-align: center;
     margin-bottom: 28px;
     margin-top: 8px;
@@ -48,8 +49,8 @@ body, html {
 .menu-links {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    width: 100%;
+    gap: 5px;
+    width: 70%;
     align-items: center;
 }
 
@@ -57,11 +58,11 @@ body, html {
     text-decoration: none;
     color: #173957;
     font-weight: 500;
-    padding: 10px 0;
-    width: 100%;
+    padding: 20px 0;
+    width: 120%;
     border-radius: 12px;
-    font-size: 1rem;
-    text-align: center;
+    font-size: 1.6rem;
+    text-align: left;
     transition: background 0.2s, color 0.2s;
     background: transparent;
 }
@@ -76,16 +77,19 @@ body, html {
 .sair-btn {
     background: #f0f5ff;
     color: #275c91;
-    font-size: 1.06rem;
+    font-size: 1.8rem;
     border: 2px solid #275c91;
     border-radius: 12px;
-    padding: 10px 0;
+    padding: 8px 20px; 
     font-weight: bold;
     box-shadow: 0 2px 6px rgba(39, 92, 145, 0.25);
-    width: 90%;
-    margin-top: 10px;
+    width: 40%;
+    margin-top: 100px;
+    margin-left: center;    
+    margin-right: auto; 
     text-decoration: none;
     display: block;
+    border-top-left-radius: 12px;
 }
 
 /* Conteúdo principal */
@@ -124,4 +128,106 @@ h2 {
     font-size: 16px;
     width: 361px;
     text-align: center;
+}
+
+.logo-img {
+    width: 150px;
+    height: auto;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-dashboard {
+    width: 400px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Responsividade */
+/* TELAS MÉDIAS: até 900px */
+@media (max-width: 900px) {
+  body, html {
+    height: auto;
+    display: block;
+    padding: 10px;
+  }
+
+  .dashboard-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 16px 10px;
+    flex-direction: column;
+  }
+
+  .conteudo-dashboard {
+    order: 1;
+    padding: 10px 0 16px;
+  }
+
+  .menu-vertical {
+    order: 2;
+    width: 80%;
+    margin-left: center;
+    margin-top: 10px;
+    padding: 18px 12px;
+  }
+
+  .logo {
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+  }
+
+  .menu-links {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .menu-links a {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 14px 10px;
+    text-align: left;
+  }
+
+  .sair-btn {
+    width: 80%;
+    margin-top: 16px;
+    font-size: 1.2rem;
+    padding: 12px 10px;
+    text-align: center;
+  }
+
+  .logo-dashboard {
+    width: 160px;
+  }
+
+  .welcome-box {
+    width: 80%;
+    max-width: 360px;
+  }
+}
+
+/* TELAS PEQUENAS: até 500px */
+@media (max-width: 500px) {
+  .menu-links a {
+    font-size: 1.05rem;
+    padding: 12px 8px;
+  }
+
+  .sair-btn {
+    font-size: 1.05rem;
+    padding: 10px 8px;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
 }

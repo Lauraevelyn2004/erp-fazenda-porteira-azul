@@ -1,84 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funcionários - ERP Porteira Azul</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/funcionarios.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Funcionários | Porteira Azul</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>👥 Gerenciar Funcionários</h1>
-            <a href="{{ url_for('main.novo_funcionario') }}" class="btn-novo">+ Novo Funcionário</a>
-            <a href="{{ url_for('main.dashboard') }}" class="btn-voltar"><span style="font-size:1.2em;">←</span> Voltar </a>
+  <div class="dashboard-container">
+    <!-- Menu Lateral -->
+    <aside class="menu-vertical">
+      <div class="logo">ERP Porteira Azul</div>
+      <nav class="menu-links">
+        <a href="{{ url_for('main.listar_funcionarios') }}">
+          <img src="{{ url_for('static', filename='images/funcionarios.png') }}" alt="Funcionários" class="menu-icon">
+          Funcionários
+        </a>
+        <a href="{{ url_for('main.listar_maquinarios') }}">
+          <img src="{{ url_for('static', filename='images/maquinario.png') }}" alt="Maquinário" class="menu-icon">
+          Maquinário
+        </a>
+        <a href="{{ url_for('main.listar_estoques') }}">
+          <img src="{{ url_for('static', filename='images/estoque.png') }}" alt="Estoque" class="menu-icon">
+          Estoque
+        </a>
+        <a href="#mtd">
+          <img src="{{ url_for('static', filename='images/decisao-venda.png') }}" alt="Decisão de Venda" class="menu-icon">
+          Decisão de Venda
+        </a>
+      </nav>
+      <a href="{{ url_for('main.logout') }}" class="sair-btn">
+        <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Sair" class="menu-icon">
+        Sair
+      </a>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="conteudo-dashboard">
+      <div class="page-header">
+        <div>
+          <h2> Gerenciamento de Funcionários</h2>
+          <p class="subtitle">Controle de pessoal da fazenda</p>
         </div>
+        <a href="{{ url_for('main.novo_funcionario') }}" class="btn btn-primary">+ Novo Funcionário</a>
+      </div>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="alerts">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                            <span>{{ message }}</span>
-                            <button class="close-btn" onclick="this.parentElement.style.display='none';">×</button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-
-        {% if funcionarios %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Função</th>
-                        <th>Salário</th>
-                        <th>Data Admissão</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for func in funcionarios %}
-                    <tr>
-                        <td>#{{ func.id }}</td>
-                        <td>{{ func.nome }}</td>
-                        <td>{{ func.funcao }}</td>
-                        <td>R$ {{ "%.2f"|format(func.salario) if func.salario else '-' }}</td>
-                        <td>
-                            {% if func.data_admissao %}
-                                {{ func.data_admissao.strftime('%d/%m/%Y') if func.data_admissao is not string else func.data_admissao }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-                        <td>
-                            <div class="acoes">
-                               <a href="{{ url_for('main.editar_funcionario', id=func.id) }}" class="btn-edit">Editar</a>
-<a href="{{ url_for('main.deletar_funcionario', id=func.id) }}" class="btn-delete" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <div class="empty-message">
-                <p>📭 Nenhum funcionário cadastrado</p>
-                <p><a href="{{ url_for('main.novo_funcionario') }}">Clique aqui para adicionar um novo funcionário →</a></p>
-            </div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="alerts">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                <span>{{ message }}</span>
+                <button class="close-btn" onclick="this.parentElement.style.display='none';">×</button>
+              </div>
+            {% endfor %}
+          </div>
         {% endif %}
-    </div>
+      {% endwith %}
 
-    <script>
-        // Fechar alertas automaticamente após 5 segundos
-        setTimeout(function() {
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                alert.style.display = 'none';
-            });
-        }, 5000);
-    </script>
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Função</th>
+              <th>Salário</th>
+              <th>Data Admissão</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if funcionarios %}
+              {% for func in funcionarios %}
+              <tr>
+                <td data-label="ID">#{{ func.id }}</td>
+                <td data-label="Nome">{{ func.nome }}</td>
+                <td data-label="Função">{{ func.funcao }}</td>
+                <td data-label="Salário">R$ {{ "%.2f"|format(func.salario) if func.salario else '-' }}</td>
+                <td data-label="Data Admissão">
+                  {% if func.data_admissao %}
+                    {{ func.data_admissao.strftime('%d/%m/%Y') if func.data_admissao is not string else func.data_admissao }}
+                  {% else %}-{% endif %}
+                </td>
+                <td data-label="Ações" class="actions-cell">
+                  <a href="{{ url_for('main.editar_funcionario', id=func.id) }}" class="btn btn-secondary btn-sm">Editar</a>
+                  <a href="{{ url_for('main.deletar_funcionario', id=func.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</a>
+                </td>
+              </tr>
+              {% endfor %}
+            {% else %}
+              <tr class="empty-state">
+                <td colspan="6">
+                  <p>📭 Nenhum funcionário cadastrado</p>
+                  <a href="{{ url_for('main.novo_funcionario') }}" class="btn btn-primary btn-sm">Adicionar Primeiro Funcionário</a>
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="page-footer">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">← Voltar ao Dashboard</a>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    setTimeout(function() {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(alert => alert.style.display = 'none');
+    }, 5000);
+  </script>
 </body>
 </html>

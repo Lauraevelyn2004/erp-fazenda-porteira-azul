@@ -4,14 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Maquinário | Porteira Azul</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/maquinario.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
 </head>
 <body>
-  <div class="container">
-    <div class="maquinario-card">
-      <div class="header">
+  <div class="dashboard-container">
+    <!-- Menu Lateral -->
+    <aside class="menu-vertical">
+      <div class="logo">ERP Porteira Azul</div>
+      <nav class="menu-links">
+        <a href="{{ url_for('main.listar_funcionarios') }}">
+          <img src="{{ url_for('static', filename='images/funcionarios.png') }}" alt="Funcionários" class="menu-icon">
+          Funcionários
+        </a>
+        <a href="{{ url_for('main.listar_maquinarios') }}">
+          <img src="{{ url_for('static', filename='images/maquinario.png') }}" alt="Maquinário" class="menu-icon">
+          Maquinário
+        </a>
+        <a href="{{ url_for('main.listar_estoques') }}">
+          <img src="{{ url_for('static', filename='images/estoque.png') }}" alt="Estoque" class="menu-icon">
+          Estoque
+        </a>
+        <a href="#mtd">
+          <img src="{{ url_for('static', filename='images/decisao-venda.png') }}" alt="Decisão de Venda" class="menu-icon">
+          Decisão de Venda
+        </a>
+      </nav>
+      <a href="{{ url_for('main.logout') }}" class="sair-btn">
+        <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Sair" class="menu-icon">
+        Sair
+      </a>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="conteudo-dashboard">
+      <div class="page-header">
         <div>
-          <h2>Maquinário</h2>
+          <h2>Gerenciamento de Maquinário</h2>
           <p class="subtitle">Gerenciar máquinas agrícolas</p>
         </div>
         <a href="{{ url_for('main.novo_maquinario') }}" class="btn btn-primary">+ Adicionar Maquinário</a>
@@ -26,7 +54,7 @@
       {% endwith %}
 
       <div class="table-wrapper">
-        <table class="maquinario-table">
+        <table class="data-table">
           <thead>
             <tr>
               <th>Tipo</th>
@@ -41,19 +69,14 @@
             {% if maquinarios %}
               {% for maq in maquinarios %}
               <tr>
-                <td>{{ maq.tipo }}</td>
-                <td>{{ maq.modelo }}</td>
-                <td>{{ maq.status }}</td>
-                <td>{{ maq.data_aquisicao or '-' }}</td>
-                <td>{{ maq.funcionario_nome or '-' }}</td>
-                <td class="actions-cell">
-                  <a href="{{ url_for('main.editar_maquinario', id=maq.id) }}"
-                     class="btn btn-secondary btn-sm">Editar</a>
-                  <a href="{{ url_for('main.deletar_maquinario', id=maq.id) }}"
-                     class="btn btn-danger btn-sm"
-                     onclick="return confirm('Tem certeza que deseja remover este maquinário?');">
-                    Remover
-                  </a>
+                <td data-label="Tipo">{{ maq.tipo }}</td>
+                <td data-label="Modelo">{{ maq.modelo }}</td>
+                <td data-label="Status">{{ maq.status }}</td>
+                <td data-label="Data">{{ maq.data_aquisicao or '-' }}</td>
+                <td data-label="Responsável">{{ maq.funcionario_nome or '-' }}</td>
+                <td data-label="Ações" class="actions-cell">
+                  <a href="{{ url_for('main.editar_maquinario', id=maq.id) }}" class="btn btn-secondary btn-sm">Editar</a>
+                  <a href="{{ url_for('main.deletar_maquinario', id=maq.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja remover este maquinário?');">Remover</a>
                 </td>
               </tr>
               {% endfor %}
@@ -61,9 +84,7 @@
               <tr class="empty-state">
                 <td colspan="6">
                   <p>Nenhuma máquina cadastrada.</p>
-                  <a href="{{ url_for('main.novo_maquinario') }}" class="btn btn-primary btn-sm">
-                    Cadastrar Primeiro Maquinário
-                  </a>
+                  <a href="{{ url_for('main.novo_maquinario') }}" class="btn btn-primary btn-sm">Cadastrar Primeiro Maquinário</a>
                 </td>
               </tr>
             {% endif %}
@@ -71,10 +92,10 @@
         </table>
       </div>
 
-      <div class="footer">
+      <div class="page-footer">
         <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline">← Voltar ao Dashboard</a>
       </div>
-    </div>
+    </main>
   </div>
 </body>
 </html>
