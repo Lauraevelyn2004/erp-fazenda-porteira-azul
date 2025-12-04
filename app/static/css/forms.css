@@ -1,0 +1,344 @@
+/* Importa o mesmo base do dashboard.css */
+
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #dfefff 0%, #b7cfe8 50%, #a6bfdc 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-container {
+  background: #f7f9fc;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(40, 80, 140, 0.18);
+  padding: 28px 0;
+  width: 1000px;
+  min-height: 420px;
+  display: flex;
+  gap: 0;
+}
+
+.menu-vertical {
+  background: #d4e4f7;
+  border-radius: 20px;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 20px;
+  padding: 28px 12px;
+  min-height: 320px;
+  box-shadow: 0 2px 16px rgba(40, 80, 140, 0.25);
+}
+
+.logo {
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #275c91;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 28px;
+  margin-top: 8px;
+}
+
+.menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 70%;
+  align-items: center;
+}
+
+.menu-links a {
+  text-decoration: none;
+  color: #173957;
+  font-weight: 500;
+  padding: 20px 0;
+  width: 120%;
+  border-radius: 12px;
+  font-size: 1.6rem;
+  text-align: left;
+  transition: background 0.2s, color 0.2s;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-links a:hover,
+.sair-btn:hover {
+  background: #bfe1ff;
+  color: #0f2a40;
+}
+
+.sair-btn {
+  background: #f0f5ff;
+  color: #275c91;
+  font-size: 1.8rem;
+  border: 2px solid #275c91;
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(39, 92, 145, 0.25);
+  width: 40%;
+  margin-top: 100px;
+  margin-left: 0;
+  margin-right: auto;
+  text-decoration: none;
+  display: block;
+  border-top-left-radius: 12px;
+}
+
+.conteudo-dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 60px);
+}
+
+/* Cabeçalho do formulário */
+.form-header {
+  margin-bottom: 24px;
+}
+
+.form-header h2 {
+  color: #275c91;
+  font-size: 2rem;
+  margin: 0 0 8px 0;
+  font-weight: bold;
+}
+
+.form-subtitle {
+  color: #28445e;
+  font-size: 1.13rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Caixa de informações */
+.info-box {
+  background: #e3efff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border-left: 4px solid #275c91;
+}
+
+.info-box p {
+  margin: 8px 0;
+  color: #173957;
+  font-size: 0.95rem;
+}
+
+.info-box strong {
+  color: #275c91;
+}
+
+/* Cartão do formulário */
+.form-card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 12px rgba(40, 80, 140, 0.1);
+}
+
+/* Grupos de formulário */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #275c91;
+  font-size: 0.95rem;
+}
+
+.required {
+  color: #ff0000;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px 14px;
+  border: 2px solid #bfe1ff;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #275c91;
+  box-shadow: 0 0 0 3px rgba(39, 92, 145, 0.1);
+}
+
+/* Botões */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #275c91;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4563;
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid #275c91;
+  color: #275c91;
+}
+
+.btn-outline:hover {
+  background: #d4e4f7;
+}
+
+/* Ações do formulário */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #bfe1ff;
+  justify-content: flex-end;
+}
+
+/* Alertas */
+.alert {
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  border-left: 4px solid;
+}
+
+.alert-success {
+  background: #d4f7e3;
+  color: #1b5e3a;
+  border-color: #10a854;
+}
+
+.alert-error {
+  background: #ffd4d4;
+  color: #8b0000;
+  border-color: #ff0000;
+}
+
+.alert-warning {
+  background: #fff4d4;
+  color: #8b5000;
+  border-color: #ffa500;
+}
+
+.menu-icon {
+  width: 40px;
+  height: 40px;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+@media (max-width: 900px) {
+  body, html {
+    height: auto;
+    display: block;
+    padding: 10px;
+  }
+
+  .dashboard-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 16px 10px;
+    flex-direction: column;
+  }
+
+  .conteudo-dashboard {
+    order: 1;
+    padding: 16px 0;
+    max-height: none;
+  }
+
+  .menu-vertical {
+    order: 2;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    padding: 18px 12px;
+  }
+
+  .form-card {
+    padding: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 500px) {
+  .menu-links a {
+    font-size: 1.05rem;
+    padding: 12px 8px;
+  }
+
+  .sair-btn {
+    font-size: 1.05rem;
+    padding: 10px 8px;
+    width: 90%;
+  }
+
+  .form-card {
+    padding: 16px;
+  }
+
+  .form-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 0.9rem;
+  }
+}

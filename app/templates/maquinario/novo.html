@@ -4,12 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% if maquinario %}Editar{% else %}Novo{% endif %} Maquinário | Porteira Azul</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/maquinario.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
 </head>
 <body>
-  <div class="container">
-    <div class="estoque-card form-card">
-      <h2>{% if maquinario %}Editar Maquinário{% else %}Novo Maquinário{% endif %}</h2>
+  <div class="dashboard-container">
+    <!-- Menu Lateral -->
+    <aside class="menu-vertical">
+      <div class="logo">ERP Porteira Azul</div>
+      <nav class="menu-links">
+        <a href="{{ url_for('main.listar_funcionarios') }}">
+          <img src="{{ url_for('static', filename='images/funcionarios.png') }}" alt="Funcionários" class="menu-icon">
+          Funcionários
+        </a>
+        <a href="{{ url_for('main.listar_maquinarios') }}">
+          <img src="{{ url_for('static', filename='images/maquinario.png') }}" alt="Maquinário" class="menu-icon">
+          Maquinário
+        </a>
+        <a href="{{ url_for('main.listar_estoques') }}">
+          <img src="{{ url_for('static', filename='images/estoque.png') }}" alt="Estoque" class="menu-icon">
+          Estoque
+        </a>
+        <a href="#mtd">
+          <img src="{{ url_for('static', filename='images/decisao-venda.png') }}" alt="Decisão de Venda" class="menu-icon">
+          Decisão de Venda
+        </a>
+      </nav>
+      <a href="{{ url_for('main.logout') }}" class="sair-btn">
+        <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Sair" class="menu-icon">
+        Sair
+      </a>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="conteudo-dashboard">
+      <div class="form-header">
+        <h2>{% if maquinario %} Editar Maquinário{% else %} Novo Maquinário{% endif %}</h2>
+        <p class="form-subtitle">{% if maquinario %}Atualize os dados da máquina{% else %}Cadastre uma nova máquina{% endif %}</p>
+      </div>
 
       {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -19,47 +50,76 @@
         {% endif %}
       {% endwith %}
 
-      <form method="POST" autocomplete="off">
-        <div class="form-group">
-          <label for="tipo">Tipo *</label>
-          <input type="text" id="tipo" name="tipo" maxlength="50" required value="{% if maquinario %}{{ maquinario.tipo }}{% endif %}" />
+      <form method="POST" autocomplete="off" class="form-card">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tipo">Tipo <span class="required">*</span></label>
+            <input
+              type="text"
+              id="tipo"
+              name="tipo"
+              required
+              maxlength="50"
+              placeholder="Ex: Trator"
+              value="{% if maquinario %}{{ maquinario.tipo }}{% endif %}"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="modelo">Modelo <span class="required">*</span></label>
+            <input
+              type="text"
+              id="modelo"
+              name="modelo"
+              required
+              maxlength="50"
+              placeholder="Ex: MF 275"
+              value="{% if maquinario %}{{ maquinario.modelo }}{% endif %}"
+            />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="modelo">Modelo *</label>
-          <input type="text" id="modelo" name="modelo" maxlength="50" required value="{% if maquinario %}{{ maquinario.modelo }}{% endif %}" />
+        <div class="form-row">
+          <div class="form-group">
+            <label for="status">Status <span class="required">*</span></label>
+            <select id="status" name="status" required>
+              <option value="">-- Selecione --</option>
+              <option value="disponível" {% if maquinario and maquinario.status == 'disponível' %}selected{% endif %}>Disponível</option>
+              <option value="manutenção" {% if maquinario and maquinario.status == 'manutenção' %}selected{% endif %}>Manutenção</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="data_aquisicao">Data de Aquisição</label>
+            <input
+              type="date"
+              id="data_aquisicao"
+              name="data_aquisicao"
+              value="{% if maquinario and maquinario.data_aquisicao %}{{ maquinario.data_aquisicao }}{% endif %}"
+            />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="status">Status *</label>
-          <select id="status" name="status" required>
-            <option value="">-- Selecione --</option>
-            <option value="disponível" {% if maquinario and maquinario.status == 'disponível' %}selected{% endif %}>Disponível</option>
-            <option value="manutenção" {% if maquinario and maquinario.status == 'manutenção' %}selected{% endif %}>Manutenção</option>
-          </select>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="funcionario_id">Funcionário Responsável</label>
+            <select id="funcionario_id" name="funcionario_id">
+              <option value="">-- Nenhum --</option>
+              {% for funcionario in funcionarios %}
+                <option value="{{ funcionario.id }}" {% if maquinario and maquinario.funcionario_id == funcionario.id %}selected{% endif %}>{{ funcionario.nome }}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="data_aquisicao">Data de Aquisição</label>
-          <input type="date" id="data_aquisicao" name="data_aquisicao" value="{% if maquinario and maquinario.data_aquisicao %}{{ maquinario.data_aquisicao }}{% endif %}" />
-        </div>
-
-        <div class="form-group">
-          <label for="funcionario_id">Funcionário Responsável</label>
-          <select id="funcionario_id" name="funcionario_id">
-            <option value="">-- Nenhum --</option>
-            {% for funcionario in funcionarios %}
-              <option value="{{ funcionario.id }}" {% if maquinario and maquinario.funcionario_id == funcionario.id %}selected{% endif %}>{{ funcionario.nome }}</option>
-            {% endfor %}
-          </select>
-        </div>
-
-        <div class="buttons">
-          <button type="submit" class="btn btn-primary">{% if maquinario %}Atualizar{% else %}Salvar{% endif %}</button>
-          <a href="{{ url_for('main.listar_maquinarios') }}" class="btn btn-outline">Cancelar</a>
+        <div class="form-actions">
+          <a href="{{ url_for('main.listar_maquinarios') }}" class="btn btn-outline">← Voltar</a>
+          <button type="submit" class="btn btn-primary">
+            {% if maquinario %} Atualizar{% else %} Salvar{% endif %}
+          </button>
         </div>
       </form>
-    </div>
+    </main>
   </div>
 </body>
 </html>
