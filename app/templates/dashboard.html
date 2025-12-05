@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Dashboard | ERP Fazenda Porteira Azul</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 
 <body>
@@ -33,7 +33,8 @@
                     Estoque
                 </a>
 
-                <a href="#mtd">
+                <!-- CORRIGIDO AQUI -->
+                <a href="{{ url_for('mtd.mtd_dashboard') }}">
                     <img src="{{ url_for('static', filename='images/decisao-venda.png') }}"
                          alt="Decisão de Venda" class="menu-icon">
                     Decisão de Venda
@@ -43,7 +44,7 @@
             <a href="{{ url_for('main.logout') }}" class="sair-btn">
                 <img src="{{ url_for('static', filename='images/logout.png') }}"
                      alt="Sair" class="menu-icon">
-                    Sair
+                Sair
             </a>
         </aside>
 

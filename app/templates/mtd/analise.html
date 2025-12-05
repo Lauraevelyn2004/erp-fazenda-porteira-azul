@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTD - Análise de Decisão de Venda</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mtd.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Menu Lateral -->
+        <div class="menu-vertical">
+            <div class="logo">🚜 PORTEIRA AZUL</div>
+            <div class="menu-links">
+                <a href="/">📊 Dashboard Principal</a>
+                <a href="/estoque">📦 Estoque</a>
+                <a href="/funcionario">👥 Funcionários</a>
+                <a href="/maquinario">🔧 Maquinário</a>
+                <a href="/venda">💰 Vendas</a>
+                <a href="/mtd" class="active">🎯 MTD</a>
+            </div>
+            <a href="/logout" class="sair-btn">🚪 SAIR</a>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="conteudo-dashboard">
+            <div class="page-header">
+                <div>
+                    <h2>Análise de Decisão de Venda</h2>
+                    <p class="subtitle">Sistema de Apoio à Tomada de Decisão baseado em MTD</p>
+                </div>
+                <a href="/mtd" class="btn btn-secondary">← Voltar ao Dashboard</a>
+            </div>
+
+            <!-- Seletor de Produto para Análise -->
+            <div class="analise-selector">
+                <h3>Selecione um Produto para Análise</h3>
+                <div class="selector-buttons">
+                    <button class="btn btn-selector" onclick="analisarProduto('cafe')">☕ CAFÉ</button>
+                    <button class="btn btn-selector" onclick="analisarProduto('soja')">🌱 SOJA</button>
+                    <button class="btn btn-selector" onclick="analisarProduto('milho')">🌽 MILHO</button>
+                </div>
+            </div>
+
+            <!-- Área de Análise (Dinamicamente Preenchida) -->
+            <div id="analiseContainer" class="analise-container">
+                <p style="text-align: center; color: #7b8fab;">Selecione um produto para iniciar a análise...</p>
+            </div>
+
+            <!-- Gráfico de Decisão -->
+            <div class="chart-section">
+                <h3>Gráfico de Decisão - Árvore de Fatores</h3>
+                <div class="decision-tree">
+                    <div class="tree-node root">
+                        <span class="node-label">DECISÃO DE VENDA</span>
+                    </div>
+
+                    <div class="tree-branches">
+                        <div class="branch">
+                            <div class="tree-node">📊 ESTOQUE</div>
+                            <div class="branch-detail">
+                                <p><strong>Alto (>3000)</strong> → Pode vender</p>
+                                <p><strong>Médio (1000-3000)</strong> → Vender com cuidado</p>
+                                <p><strong>Baixo (<1000)</strong> → Reter no estoque</p>
+                            </div>
+                        </div>
+
+                        <div class="branch">
+                            <div class="tree-node">💰 MARGEM</div>
+                            <div class="branch-detail">
+                                <p><strong>>20%</strong> → Margem excelente</p>
+                                <p><strong>10-20%</strong> → Margem boa</p>
+                                <p><strong><10%</strong> → Margem baixa</p>
+                            </div>
+                        </div>
+
+                        <div class="branch">
+                            <div class="tree-node">📈 SAZONALIDADE</div>
+                            <div class="branch-detail">
+                                <p><strong>Alta safra</strong> → Esperar preço melhor</p>
+                                <p><strong>Estável</strong> → Pode vender</p>
+                                <p><strong>Em queda</strong> → Vender rapidamente</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Histórico de Últimas Vendas -->
+            <div class="table-wrapper">
+                <h3>Últimas Vendas por Produto</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Preço de Venda</th>
+                            <th>Quantidade</th>
+                            <th>Data da Venda</th>
+                            <th>Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for venda in vendas_recentes %}
+                        <tr>
+                            <td><strong>{{ venda.produto|upper }}</strong></td>
+                            <td>R$ {{ "%.2f"|format(venda.preco_venda) }}</td>
+                            <td><span class="qty-badge">{{ venda.quantidade|int }}</span></td>
+                            <td>{{ venda.data_venda.strftime('%d/%m/%Y') }}</td>
+                            <td class="price-cell">R$ {{ "%.2f"|format(venda.preco_venda * venda.quantidade) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tabela de Estoques Atuais -->
+            <div class="table-wrapper">
+                <h3>Estoques Atuais</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Local de Armazenamento</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for estoque in estoques %}
+                        <tr>
+                            <td><strong>{{ estoque.produto|upper }}</strong></td>
+                            <td><span class="qty-badge">{{ estoque.quantidade|int }}</span></td>
+                            <td>{{ estoque.local_armazenamento }}</td>
+                            <td>
+                                {% if estoque.quantidade > 3000 %}
+                                <span class="status-badge status-high">Alto</span>
+                                {% elif estoque.quantidade > 1000 %}
+                                <span class="status-badge status-medium">Médio</span>
+                                {% else %}
+                                <span class="status-badge status-low">Baixo</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tabela de MTD para Referência -->
+            <div class="table-wrapper">
+                <h3>Dados MTD - Preços Sugeridos</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Custo/Saca</th>
+                            <th>Margem</th>
+                            <th>Preço Sugerido</th>
+                            <th>Sazonalidade</th>
+                            <th>Recomendação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in mtd_records %}
+                        <tr>
+                            <td><strong>{{ record.produto|upper }}</strong></td>
+                            <td>R$ {{ "%.2f"|format(record.custo_por_saca) }}</td>
+                            <td><span class="badge-percentage">{{ "%.1f"|format(record.margem * 100) }}%</span></td>
+                            <td class="price-cell">R$ {{ "%.2f"|format(record.custo_por_saca * (1 + record.margem)) }}</td>
+                            <td>{{ record.sazonalidade }}</td>
+                            <td>{{ record.recomendacao }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Análise Detalhada -->
+    <div id="analiseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharAnalise()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        async function analisarProduto(produto) {
+            try {
+                const response = await fetch(`/mtd/api/sugerir-venda/${produto}`);
+                const result = await response.json();
+
+                if (response.ok) {
+                    exibirAnalise(result);
+                } else {
+                    alert('Erro: ' + result.error);
+                }
+            } catch (error) {
+                alert('Erro ao buscar análise: ' + error.message);
+            }
+        }
+
+        function exibirAnalise(dados) {
+            const container = document.getElementById('analiseContainer');
+            
+            const html = `
+                <div class="analise-result">
+                    <div class="result-header">
+                        <h2>${dados.produto}</h2>
+                        <span class="urgencia-badge urgencia-${dados.urgencia.toLowerCase()}">
+                            Urgência: ${dados.urgencia}
+                        </span>
+                    </div>
+
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span class="label">Custo por Saca</span>
+                            <span class="value">R$ ${dados.custo.toFixed(2)}</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Margem Sugerida</span>
+                            <span class="value">${dados.margem}</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Preço Sugerido</span>
+                            <span class="value price">R$ ${dados.preco_sugerido.toFixed(2)}</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Estoque Disponível</span>
+                            <span class="value">${dados.estoque_disponivel} sacas</span>
+                        </div>
+                    </div>
+
+                    <div class="result-recommendation">
+                        <div class="recommendation-box">
+                            <h3>🎯 Recomendação de Ação</h3>
+                            <p class="recomendacao-text">${dados.acao_recomendada}</p>
+                            <div class="fatores">
+                                <h4>📊 Fatores Considerados:</h4>
+                                <ul>
+                                    <li><strong>Estoque:</strong> ${dados.grafico_decisao.fatores.estoque.peso} - ${dados.grafico_decisao.fatores.estoque.recomendacao}</li>
+                                    <li><strong>Margem:</strong> ${dados.grafico_decisao.fatores.margem.peso} - ${dados.grafico_decisao.fatores.margem.recomendacao}</li>
+                                    <li><strong>Sazonalidade:</strong> ${dados.grafico_decisao.fatores.sazonalidade.valor} - ${dados.grafico_decisao.fatores.sazonalidade.recomendacao}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function fecharAnalise() {
+            document.getElementById('analiseModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('analiseModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

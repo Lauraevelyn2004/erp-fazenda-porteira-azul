@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo MTD - Dashboard</title>
+
+    <!-- Mesmo layout das páginas (menu lateral, etc.) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+    <!-- Estilos específicos do MTD (apenas conteúdo, não menu) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mtd.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Menu Lateral -->
+        <aside class="menu-vertical">
+            <div class="logo">ERP Porteira Azul</div>
+            <nav class="menu-links">
+                <a href="{{ url_for('main.listar_funcionarios') }}">
+                    <img src="{{ url_for('static', filename='images/funcionarios.png') }}" alt="Funcionários" class="menu-icon">
+                    Funcionários
+                </a>
+                <a href="{{ url_for('main.listar_maquinarios') }}">
+                    <img src="{{ url_for('static', filename='images/maquinario.png') }}" alt="Maquinário" class="menu-icon">
+                    Maquinário
+                </a>
+                <a href="{{ url_for('main.listar_estoques') }}">
+                    <img src="{{ url_for('static', filename='images/estoque.png') }}" alt="Estoque" class="menu-icon">
+                    Estoque
+                </a>
+                <a href="{{ url_for('mtd.mtd_dashboard') }}">
+                    <img src="{{ url_for('static', filename='images/decisao-venda.png') }}" alt="Decisão de Venda" class="menu-icon">
+                    Decisão de Venda
+                </a>
+            </nav>
+            <a href="{{ url_for('main.logout') }}" class="sair-btn">
+                <img src="{{ url_for('static', filename='images/logout.png') }}" alt="Sair" class="menu-icon">
+                Sair
+            </a>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="conteudo-dashboard">
+            <div class="page-header">
+                <div>
+                    <h2>Módulo de Tomada de Decisão (MTD)</h2>
+                    <p class="subtitle">Análise de Produtos para Decisão de Venda</p>
+                </div>
+                <a href="{{ url_for('mtd.mtd_analise') }}" class="btn btn-primary">📈 Análise Detalhada</a>
+            </div>
+
+            <!-- Cards de Resumo -->
+            <div class="mtd-cards">
+                {% for record in mtd_records %}
+                <div class="mtd-card {% if 'Esperar' in record.recomendacao %}card-esperar{% elif 'Vender' in record.recomendacao %}card-vender{% elif 'Manter' in record.recomendacao %}card-manter{% endif %}">
+                    <div class="card-header">
+                        <h3>{{ record.produto|upper }}</h3>
+                        <span class="badge">ID: {{ record.id }}</span>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="metric">
+                            <span class="label">Custo por Saca</span>
+                            <span class="value">R$ {{ "%.2f"|format(record.custo_por_saca) }}</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Margem Sugerida</span>
+                            <span class="value percentage">{{ "%.1f"|format(record.margem * 100) }}%</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Estoque Disponível</span>
+                            <span class="value">{{ estoque_info.get(record.produto, 0)|int }} sacas</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Preço Sugerido</span>
+                            <span class="value price">R$ {{ "%.2f"|format(record.custo_por_saca * (1 + record.margem)) }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-condition">
+                        <div class="condition-item">
+                            <span class="label">Sazonalidade</span>
+                            <span class="value">{{ record.sazonalidade }}</span>
+                        </div>
+                    </div>
+
+                    <div class="card-recommendation">
+                        <div class="recommendation-box">
+                            <strong>💡 Recomendação:</strong>
+                            <p>{{ record.recomendacao }}</p>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="editarMTD({{ record.id }})">✏️ Editar</button>
+                        <button class="btn btn-sm btn-danger" onclick="deletarMTD({{ record.id }})">🗑️ Deletar</button>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% if not mtd_records %}
+                <div class="empty-state">
+                    <p>Nenhum registro MTD encontrado. Insira dados no banco de dados para começar.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Tabela Detalhada -->
+            <div class="table-wrapper">
+                <h3>Tabela Detalhada de MTD</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produto</th>
+                            <th>Custo/Saca</th>
+                            <th>Margem</th>
+                            <th>Preço Sugerido</th>
+                            <th>Estoque</th>
+                            <th>Sazonalidade</th>
+                            <th>Recomendação</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in mtd_records %}
+                        <tr>
+                            <td>{{ record.id }}</td>
+                            <td><strong>{{ record.produto|upper }}</strong></td>
+                            <td>R$ {{ "%.2f"|format(record.custo_por_saca) }}</td>
+                            <td><span class="badge-percentage">{{ "%.1f"|format(record.margem * 100) }}%</span></td>
+                            <td class="price-cell">R$ {{ "%.2f"|format(record.custo_por_saca * (1 + record.margem)) }}</td>
+                            <td><span class="qty-badge">{{ estoque_info.get(record.produto, 0)|int }}</span></td>
+                            <td>{{ record.sazonalidade }}</td>
+                            <td>{{ record.recomendacao }}</td>
+                            <td class="actions-cell">
+                                <button class="btn btn-sm btn-secondary" onclick="editarMTD({{ record.id }})">Editar</button>
+                                <button class="btn btn-sm btn-danger" onclick="deletarMTD({{ record.id }})">Deletar</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Formulário para Adicionar Novo MTD -->
+            <div class="form-section">
+                <h3>Adicionar Novo Registro MTD</h3>
+                <form id="formNovoMTD" class="form-grid">
+                    <div class="form-group">
+                        <label for="produto" class="form-label">Produto</label>
+                        <select id="produto" name="produto" class="form-control" required>
+                            <option value="">Selecione um produto</option>
+                            <option value="cafe">Café</option>
+                            <option value="soja">Soja</option>
+                            <option value="milho">Milho</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="custo_por_saca" class="form-label">Custo por Saca (R$)</label>
+                        <input type="number" id="custo_por_saca" name="custo_por_saca" class="form-control" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="margem" class="form-label">Margem (%)</label>
+                        <input type="number" id="margem" name="margem" class="form-control" step="0.01" min="0" max="1" required placeholder="Ex: 0.18 para 18%">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sazonalidade" class="form-label">Sazonalidade</label>
+                        <select id="sazonalidade" name="sazonalidade" class="form-control" required>
+                            <option value="">Selecione</option>
+                            <option value="Alta safra">Alta safra</option>
+                            <option value="Média safra">Média safra</option>
+                            <option value="Baixa safra">Baixa safra</option>
+                            <option value="Em queda">Em queda</option>
+                            <option value="Estável">Estável</option>
+                            <option value="Em alta">Em alta</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="recomendacao" class="form-label">Recomendação</label>
+                        <textarea id="recomendacao" name="recomendacao" class="form-control" rows="2" required placeholder="Ex: Vender rapidamente"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary full-width">➕ Adicionar MTD</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.getElementById('formNovoMTD').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                produto: document.getElementById('produto').value,
+                custo_por_saca: parseFloat(document.getElementById('custo_por_saca').value),
+                margem: parseFloat(document.getElementById('margem').value),
+                sazonalidade: document.getElementById('sazonalidade').value,
+                recomendacao: document.getElementById('recomendacao').value
+            };
+
+            try {
+                const response = await fetch('/mtd/api/inserir', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('✓ MTD adicionado com sucesso!');
+                    document.getElementById('formNovoMTD').reset();
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    alert('✗ Erro: ' + result.error);
+                }
+            } catch (error) {
+                alert('✗ Erro ao adicionar MTD: ' + error.message);
+            }
+        });
+
+        function deletarMTD(id) {
+            if (!confirm('Tem certeza que deseja deletar este MTD?')) return;
+
+            fetch(`/mtd/api/deletar/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert('✓ MTD deletado com sucesso!');
+                    location.reload();
+                } else {
+                    alert('✗ Erro: ' + result.error);
+                }
+            })
+            .catch(error => alert('✗ Erro: ' + error.message));
+        }
+
+        function editarMTD(id) {
+            alert('Funcionalidade de edição em desenvolvimento. ID: ' + id);
+        }
+    </script>
+</body>
+</html>

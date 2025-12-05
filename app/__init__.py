@@ -9,6 +9,7 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''  # Coloque a senha correta aqui
 app.config['MYSQL_DB'] = 'erp_fazenda'
 
+
 def get_db():
     if 'db' not in g:
         g.db = pymysql.connect(
@@ -20,13 +21,15 @@ def get_db():
         )
     return g.db
 
+
 @app.teardown_appcontext
 def close_db(error):
     db = g.pop('db', None)
     if db is not None:
         db.close()
 
-# Importa as rotas após definir app e get_db
-from app.routes import bp as mainbp
-app.register_blueprint(mainbp)
+# Importa e registra os blueprints UMA vez
+from app.routes import bp as mainbp, mtd_bp
 
+app.register_blueprint(mainbp)   # blueprint principal (main)
+app.register_blueprint(mtd_bp)   # blueprint do MTD
